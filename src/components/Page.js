@@ -1,10 +1,10 @@
 import React from 'react';
-import InputBase from '@material-ui/core/InputBase';
 import {ToolBar} from './ToolBar';
-import Paper from '@material-ui/core/Paper';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 import {HotKeys} from 'react-hotkeys';
 import {Notifier, openSnackbar } from './Notifier';
+import {NoteTitleContainer} from '../containers/NoteTitleContainer';
+import {NoteBodyContainer} from '../containers/NoteBodyContainer';
 
 export class Page extends React.Component {
 
@@ -25,9 +25,6 @@ export class Page extends React.Component {
       }
     });
 
-    const textFontSize = 20;
-    const headerFontSize = 30;
-
     const keyMap = {
         save: 'ctrl+s',
     }
@@ -41,16 +38,12 @@ export class Page extends React.Component {
       <div>
         <Notifier/>
         <HotKeys keyMap={keyMap} handlers={handlers}>
-          <InputBase defaultValue = 'Untitled0' inputProps={{style: {fontSize: headerFontSize}}}/>
+          <NoteTitleContainer value = 'Untitled0'/>
           <br/>
           <ToolBar />
           <br/>
           <ContextMenuTrigger id="some_unique_identifier">
-            <Paper>
-              <InputBase rows = {Math.ceil(window.innerHeight / textFontSize)}
-                      inputProps={{style: {fontSize: textFontSize}}}
-                      fullWidth = {true} multiline={true} />
-            </Paper>
+            <NoteBodyContainer value = "Note body"/>
           </ContextMenuTrigger>
 
           <ContextMenu id="some_unique_identifier">
@@ -65,7 +58,7 @@ export class Page extends React.Component {
               Draw
             </MenuItem>
           </ContextMenu>
-          
+
         </HotKeys>
       </div>
             );
