@@ -4,7 +4,7 @@ import {ToolBar} from './ToolBar';
 import Paper from '@material-ui/core/Paper';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 import {HotKeys} from 'react-hotkeys';
-import Snackbar from '@material-ui/core/Snackbar';
+import {Notifier, openSnackbar } from './Notifier';
 
 export class Page extends React.Component {
 
@@ -13,7 +13,8 @@ export class Page extends React.Component {
   }
 
   openSnackBar(event) {
-    console.log('Snackbar code')
+    event.preventDefault();
+    openSnackbar({ message: 'Document saved!' });
   }
 
   render() {
@@ -33,12 +34,12 @@ export class Page extends React.Component {
 
     const handlers = {
       'save': (event) => this.openSnackBar(event)
-      // 'save': (event) => {{openSnackBar}}
     };
 
     return (
 
       <div>
+        <Notifier/>
         <HotKeys keyMap={keyMap} handlers={handlers}>
           <InputBase defaultValue = 'Untitled0' inputProps={{style: {fontSize: headerFontSize}}}/>
           <br/>
@@ -64,6 +65,7 @@ export class Page extends React.Component {
               Draw
             </MenuItem>
           </ContextMenu>
+          
         </HotKeys>
       </div>
             );
