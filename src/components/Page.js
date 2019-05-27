@@ -56,10 +56,10 @@ export class Page extends React.Component {
 
           <ContextMenu id="some_unique_identifier">
             <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
-              Add image
+              Add video
             </MenuItem>
             <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>
-              Add video
+              Add image
             </MenuItem>
             <MenuItem divider />
             <MenuItem data={{foo: 'bar'}} onClick={this.handleClick}>

@@ -3,11 +3,12 @@ import {VideoCallOutlined, AddAPhotoOutlined, BrushOutlined} from '@material-ui/
 
 export class ToolBar extends React.Component {
   render () {
+    const parentStyle = {padding : 5};
     return (
-      <div className = "toolbar">
-        <VideoCallOutlined/>
+      <div className = "toolbar" style = {parentStyle}>
+        <VideoCallOutlined style = {{marginRight : 50}}/>
         <AddAPhotoOutlined/>
-        <BrushOutlined/>
+        <BrushOutlined style = {{marginLeft : 50}}/>
       </div>
     );
   }
