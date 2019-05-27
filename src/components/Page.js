@@ -5,6 +5,8 @@ import {HotKeys} from 'react-hotkeys';
 import {Notifier, openSnackbar } from './Notifier';
 import {NoteTitleContainer} from '../containers/NoteTitleContainer';
 import {NoteBodyContainer} from '../containers/NoteBodyContainer';
+import Fab from '@material-ui/core/Fab';
+import {SaveOutlined} from '@material-ui/icons/';
 
 export class Page extends React.Component {
 
@@ -33,6 +35,12 @@ export class Page extends React.Component {
       'save': (event) => this.openSnackBar(event)
     };
 
+    const fabStyle = {
+      position: 'absolute',
+      bottom: 10,
+      right: 10,
+    };
+
     return (
 
       <div>
@@ -58,8 +66,10 @@ export class Page extends React.Component {
               Draw
             </MenuItem>
           </ContextMenu>
-
         </HotKeys>
+        <Fab style={fabStyle} onClick = {this.openSnackBar} >
+          <SaveOutlined/>
+        </Fab>
       </div>
             );
   }
