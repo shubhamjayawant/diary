@@ -10,6 +10,37 @@ import {SaveOutlined} from '@material-ui/icons/';
 
 export class Page extends React.Component {
 
+  constructor (props) {
+    super(props);
+    this.state = {title : 'untitled',
+                  body : []};
+  }
+
+  componentDidMount () {
+
+    if (this.props.id) {
+
+      fetch("http://127.0.0.1:5000/notes/" + this.props.id)
+      .then(res => res.json())
+      .then(
+        (result) => {
+          this.setState({
+            title: result.data.title,
+            body: result.data.body
+          });
+        },
+        (error) => {
+          console.log(error);
+        }
+      )
+      .catch(
+        console.log("Fellas, it's happening")
+      )
+
+    }
+
+  }
+
   handleClick(e, data) {
     console.log(data.foo);
   }
@@ -46,12 +77,12 @@ export class Page extends React.Component {
       <div>
         <Notifier/>
         <HotKeys keyMap={keyMap} handlers={handlers}>
-          <NoteTitleContainer value = 'Untitled0'/>
+          <NoteTitleContainer value = {this.state.title}/>
           <br/>
           <ToolBar />
           <br/>
           <ContextMenuTrigger id="some_unique_identifier">
-            <NoteBodyContainer value = "Note body"/>
+            <NoteBodyContainer data = {this.state.body} value = "Note body"/>
           </ContextMenuTrigger>
 
           <ContextMenu id="some_unique_identifier">
@@ -71,6 +102,6 @@ export class Page extends React.Component {
           <SaveOutlined/>
         </Fab>
       </div>
-            );
+    );
   }
 }

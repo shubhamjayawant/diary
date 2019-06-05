@@ -6,7 +6,7 @@ export class App extends React.Component {
   render() {
       return (
         <div className="App">
-          <Page/>
+          <Page id = '5cf6d2ec614668477e4013d7'/>
         </div>
       );
   }
