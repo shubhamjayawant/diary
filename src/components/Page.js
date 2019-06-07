@@ -7,7 +7,7 @@ import {NoteTitleContainer} from '../containers/NoteTitleContainer';
 import {NoteBodyContainer} from '../containers/NoteBodyContainer';
 import Fab from '@material-ui/core/Fab';
 import {SaveOutlined} from '@material-ui/icons/';
-
+// TODO : Change state when state of children change
 export class Page extends React.Component {
 
   constructor (props) {
@@ -36,7 +36,6 @@ export class Page extends React.Component {
       .catch(
         console.log("Fellas, it's happening")
       )
-
     }
 
   }
@@ -45,9 +44,48 @@ export class Page extends React.Component {
     console.log(data.foo);
   }
 
-  openSnackBar(event) {
+  saveNote(event) {
+
     event.preventDefault();
-    openSnackbar({ message: 'Document saved!' });
+    let message = '';
+    let method = '';
+    let url = '';
+
+    if (this.props.id) {
+
+      url = "http://127.0.0.1:5000/notes/" + this.props.id;
+      method = 'PUT';
+
+    } else {
+
+      url = "http://127.0.0.1:5000/notes/";
+      method = 'POST';
+
+    }
+
+    fetch(url, {
+      method: method,
+      body: JSON.stringify({
+        title : this.state.title,
+        body : this.state.body})})
+        .then((result) => {
+
+            if (result.status === 201) {
+
+              message = 'SAVED NOTE SUCCESSFULLY';
+
+            } else {
+
+              message = 'SOMETHING WENT WRONG';
+
+            }
+          })
+        .catch(
+          console.log('SOMETHING WENT WRONG')
+        )
+
+    console.log(message)
+    openSnackbar({ message: message });
   }
 
   render() {
@@ -63,7 +101,7 @@ export class Page extends React.Component {
     }
 
     const handlers = {
-      'save': (event) => this.openSnackBar(event)
+      'save': (event) => this.saveNote(event)
     };
 
     const fabStyle = {
@@ -82,7 +120,7 @@ export class Page extends React.Component {
           <ToolBar />
           <br/>
           <ContextMenuTrigger id="some_unique_identifier">
-            <NoteBodyContainer data = {this.state.body} value = "Note body"/>
+            <NoteBodyContainer value = {this.state.body}/>
           </ContextMenuTrigger>
 
           <ContextMenu id="some_unique_identifier">
@@ -98,7 +136,7 @@ export class Page extends React.Component {
             </MenuItem>
           </ContextMenu>
         </HotKeys>
-        <Fab style={fabStyle} onClick = {this.openSnackBar} >
+        <Fab style={fabStyle} onClick = {this.saveNote} >
           <SaveOutlined/>
         </Fab>
       </div>

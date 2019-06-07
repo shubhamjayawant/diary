@@ -5,34 +5,31 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 export class NoteBody extends React.Component {
 
+  constructor (props) {
+    super(props);
+    this.state = {value : this.props.value}
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.value !== this.state.value) {
+      this.setState({value : nextProps.value})
+    }
+  }
+
   render() {
     const textFontSize = 20;
     const parentStyle = {width: '80%', padding : 15};
     return(
       <Paper className = "mx-auto" style={parentStyle}>
         <InputBase
-          value = {this.getContent()}
+          value = {this.state.value}
           rows = {Math.ceil((window.innerHeight * 0.85) / textFontSize)}
           rowsMax = {Math.ceil((window.innerHeight * 0.85) / textFontSize)}
           inputProps={{style: {fontSize: textFontSize}}}
-          fullWidth = {true} multiline={true} />
+          fullWidth = {true}
+          multiline={true}
+          onChange = {(e) => this.setState({value : e.target.value})}/>
       </Paper>
-  );
-  }
-
-  getContent() {
-
-    const reducer = (accumulator, item) => accumulator + item.content + '\n';
-
-    if (typeof this.props.data === 'undefined' || this.props.data.length === 0) {
-
-      return 'Note body'
-
-    } else {
-
-      return this.props.data.reduce(reducer,'');
-
-    }
-
+    );
   }
 }
