@@ -5,14 +5,9 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 export class NoteBody extends React.Component {
 
-  constructor (props) {
-    super(props);
-    this.state = {value : this.props.value}
-  }
-
   componentWillReceiveProps(nextProps) {
-    if (nextProps.value !== this.state.value) {
-      this.setState({value : nextProps.value})
+    if (nextProps.value !== this.props.value) {
+      this.props.onChangeHandler()
     }
   }
 
@@ -22,13 +17,13 @@ export class NoteBody extends React.Component {
     return(
       <Paper className = "mx-auto" style={parentStyle}>
         <InputBase
-          value = {this.state.value}
+          value = {this.props.value}
           rows = {Math.ceil((window.innerHeight * 0.85) / textFontSize)}
           rowsMax = {Math.ceil((window.innerHeight * 0.85) / textFontSize)}
           inputProps={{style: {fontSize: textFontSize}}}
           fullWidth = {true}
           multiline={true}
-          onChange = {(e) => this.setState({value : e.target.value})}/>
+          onChange = {this.props.onChangeHandler}/>
       </Paper>
     );
   }
