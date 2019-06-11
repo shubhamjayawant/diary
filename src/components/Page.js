@@ -1,9 +1,7 @@
 import React from 'react';
-import {ToolBar} from './ToolBar';
-import {HotKeys} from 'react-hotkeys';
 import {Notifier, openSnackbar } from './Notifier';
-import {NoteTitleContainer} from '../containers/NoteTitleContainer';
-import {NoteBodyContainer} from '../containers/NoteBodyContainer';
+import {NoteTitle} from './NoteTitle';
+import {NoteBody} from './NoteBody';
 import Fab from '@material-ui/core/Fab';
 import {SaveOutlined} from '@material-ui/icons/';
 
@@ -17,12 +15,16 @@ export class Page extends React.Component {
   }
 
   onTitleChangeHandler (event) {
-    if (event && ('target' in event) && (event.target.value) !== this.state.title){
+    if (event &&
+        ('target' in event) &&
+        (event.target.value) !== this.state.title){
         this.setState({title : event.target.value})
     }
   }
   onBodyChangeHandler (event) {
-    if (event && ('target' in event) && (event.target.value) !== this.state.body){
+    if (event &&
+        ('target' in event) &&
+        (event.target.value) !== this.state.body){
           this.setState({body : event.target.value})
       }
   }
@@ -42,18 +44,10 @@ export class Page extends React.Component {
           console.log(error);
         }
       )
-      .catch(
-        console.log("Fellas, it's happening")
-      )
     }
   }
 
-  handleClick(e, data) {
-    console.log(data.foo);
-  }
-
   saveNote(event) {
-    event.preventDefault();
     let method = '';
     let url = '';
     if (this.props.id) {
@@ -68,46 +62,41 @@ export class Page extends React.Component {
       body: JSON.stringify({
         title : this.state.title,
         body : this.state.body})})
-        .then((result) => {
-            if (result.status === 201) {
-              openSnackbar({ message: 'SAVED NOTE SUCCESSFULLY'});
-            } else {
-              openSnackbar({ message: 'SOMETHING WENT WRONG'});
-            }
-          })
+    .then((result) => {
+        if (result.status === 201) {
+          openSnackbar({ message: 'SAVED NOTE SUCCESSFULLY'});
+        } else {
+          openSnackbar({ message: 'SOMETHING WENT WRONG'});
+        }
+      })
   }
 
   render() {
-
     document.body.addEventListener('keydown', event => {
       if (event.ctrlKey && 's'.indexOf(event.key) !== -1) {
-        event.preventDefault()
+        event.preventDefault();
+        noteSaver(event);
       }
     });
-    const keyMap = {
-        save: 'ctrl+s',
-    }
-    const handlers = {
-      'save': (event) => this.saveNote(event)
-    };
+
     const fabStyle = {
       position: 'absolute',
       bottom: 10,
       right: 10,
     };
+    
+    const noteSaver = (event) => this.saveNote(event);
+
     return (
       <div>
         <Notifier/>
-        <HotKeys keyMap={keyMap} handlers={handlers}>
-          <NoteTitleContainer value = {this.state.title}
-                              onChangeHandler = {this.onTitleChangeHandler}/>
+          <NoteTitle value = {this.state.title}
+                      onChangeHandler = {this.onTitleChangeHandler}/>
           <br/>
-          <ToolBar />
           <br/>
-          <NoteBodyContainer value = {this.state.body}
-                            onChangeHandler = {this.onBodyChangeHandler}/>
-        </HotKeys>
-        <Fab style={fabStyle} onClick = {this.saveNote} >
+          <NoteBody value = {this.state.body}
+                    onChangeHandler = {this.onBodyChangeHandler}/>
+        <Fab style={fabStyle} onClick = {noteSaver} >
           <SaveOutlined/>
         </Fab>
       </div>

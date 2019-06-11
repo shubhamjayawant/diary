@@ -13,7 +13,9 @@ export class NoteTitle extends React.Component {
     const headerFontSize = 30;
     return <InputBase value = {this.props.value}
       fullWidth = {true}
-      inputProps={{style: {fontSize: headerFontSize, textAlign : 'center'}}}
+      inputProps={{style: {fontSize: headerFontSize,
+                           fontWeight: 'bold',
+                           textAlign : 'center'}}}
       onChange = {this.props.onChangeHandler}/>
   }
 }
