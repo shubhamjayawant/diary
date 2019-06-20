@@ -30,35 +30,24 @@ export class Page extends React.Component {
   }
 
   componentDidMount () {
-    if (this.props.id) {
-      fetch("http://127.0.0.1:5000/notes/" + this.props.id)
-      .then(res => res.json())
-      .then(
-        (result) => {
-          this.setState({
-            title: result.data.title,
-            body: result.data.body
-          });
-        },
-        (error) => {
-          console.log(error);
-        }
-      )
-    }
+    fetch("http://127.0.0.1:5000/notes/" + this.props.id)
+    .then(res => res.json())
+    .then(
+      (result) => {
+        this.setState({
+          title: result.data.title,
+          body: result.data.body
+        });
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
   }
 
   saveNote(event) {
-    let method = '';
-    let url = '';
-    if (this.props.id) {
-      url = "http://127.0.0.1:5000/notes/" + this.props.id;
-      method = 'PUT';
-    } else {
-      url = "http://127.0.0.1:5000/notes/";
-      method = 'POST';
-    }
-    fetch(url, {
-      method: method,
+    fetch("http://127.0.0.1:5000/notes/" + this.props.id, {
+      method: 'PUT',
       body: JSON.stringify({
         title : this.state.title,
         body : this.state.body})})
@@ -81,10 +70,10 @@ export class Page extends React.Component {
 
     const fabStyle = {
       position: 'absolute',
-      bottom: 10,
-      right: 10,
+      bottom: '3%',
+      right: '3%',
     };
-    
+
     const noteSaver = (event) => this.saveNote(event);
 
     return (
