@@ -10,6 +10,7 @@ export class NoteIndex extends React.Component {
   constructor (props) {
     super(props);
     this.openNotePage = this.openNotePage.bind(this);
+    this.updateNotes = this.updateNotes.bind(this);
     this.state = {notes : []};
   }
 
@@ -56,6 +57,12 @@ export class NoteIndex extends React.Component {
     )
   }
 
+  updateNotes (newNotes) {
+    this.setState({
+      notes : newNotes
+    })
+  }
+
   render () {
     const fabStyle = {
       position: 'fixed',
@@ -66,7 +73,7 @@ export class NoteIndex extends React.Component {
     return(
       <div style = {{marginTop : 10, overflow: 'auto'}}>
         <center>
-          <NoteList value = {this.state.notes}/>
+          <NoteList value = {this.state.notes} onUpdate = {this.updateNotes}/>
         </center>
         <Fab style={fabStyle} onClick = {this.createNote}>
           <CreateOutlined/>

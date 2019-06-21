@@ -11,6 +11,22 @@ import Avatar from '@material-ui/core/Avatar';
 
 export class NoteList extends React.Component {
 
+  constructor (props) {
+    super(props);
+  }
+
+  onDeleteButtonClickListener (index, event) {
+    fetch("http://127.0.0.1:5000/notes/" + this.props.value[index].id, {
+        method: 'DELETE',
+        mode: 'cors'
+    }).then(res => res.json())
+    .then((result) => {
+        this.props.onUpdate(result.data)
+      }
+    )
+    .catch(err => console.log(err));
+  }
+
   getListItems() {
       return this.props.value.map((item, index) =>
         <ListItem key = {index}>
@@ -26,8 +42,8 @@ export class NoteList extends React.Component {
             secondary= {item.created}
           />
           <ListItemSecondaryAction>
-            <IconButton>
-              <DeleteIcon />
+            <IconButton id = {index} onClick = {this.onDeleteButtonClickListener.bind(this, index)}>
+              <DeleteIcon/>
             </IconButton>
           </ListItemSecondaryAction>
         </ListItem>
