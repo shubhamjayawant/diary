@@ -11,10 +11,6 @@ import Avatar from '@material-ui/core/Avatar';
 
 export class NoteList extends React.Component {
 
-  constructor (props) {
-    super(props);
-  }
-
   onDeleteButtonClickListener (index, event) {
     fetch("http://127.0.0.1:5000/notes/" + this.props.value[index].id, {
         method: 'DELETE',
@@ -27,15 +23,25 @@ export class NoteList extends React.Component {
     .catch(err => console.log(err));
   }
 
+  onListItemClickListener(index, event) {
+    this.props.history.push({
+      pathname : '/page',
+      id : this.props.value[index].id});
+  }
+
   getListItems() {
       return this.props.value.map((item, index) =>
-        <ListItem key = {index}>
+        <ListItem
+          style = {{cursor: 'pointer'}}
+          id = {index}
+          onClick = {this.onListItemClickListener.bind(this, index)}>
           <ListItemAvatar>
             <Avatar>
               <NoteIcon />
             </Avatar>
           </ListItemAvatar>
           <ListItemText
+
             primary={item.title.length < 30 ?
                       item.title :
                       item.title.substring(0, 27) + '...'}

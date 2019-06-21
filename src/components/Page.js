@@ -30,7 +30,7 @@ export class Page extends React.Component {
   }
 
   componentDidMount () {
-    fetch("http://127.0.0.1:5000/notes/" + this.props.id)
+    fetch("http://127.0.0.1:5000/notes/" + this.props.location.id)
     .then(res => res.json())
     .then(
       (result) => {
@@ -46,7 +46,7 @@ export class Page extends React.Component {
   }
 
   saveNote(event) {
-    fetch("http://127.0.0.1:5000/notes/" + this.props.id, {
+    fetch("http://127.0.0.1:5000/notes/" + this.props.location.id, {
       method: 'PUT',
       body: JSON.stringify({
         title : this.state.title,

@@ -2,22 +2,15 @@ import React from 'react';
 import Fab from '@material-ui/core/Fab';
 import {CreateOutlined} from '@material-ui/icons/';
 import {NoteList} from './NoteList';
-import {Page} from './Page';
-import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
 
 export class NoteIndex extends React.Component {
-// TODO: List not scrolling and loading main page
+
   constructor (props) {
     super(props);
-    this.openNotePage = this.openNotePage.bind(this);
+    this.createNote = this.createNote.bind(this);
     this.updateNotes = this.updateNotes.bind(this);
     this.state = {notes : []};
   }
-
-  openNotePage(noteId) {
-    console.log(noteId)
-     this.props.history.push('/notePage');
-   }
 
   componentDidMount () {
     fetch("http://127.0.0.1:5000/notes")
@@ -52,7 +45,9 @@ export class NoteIndex extends React.Component {
     .then(res => res.json())
     .then(
       (result) => {
-        this.openNotePage(result.data)
+        this.props.history.push({
+          pathname : '/page',
+          id : result.data});
       }
     )
   }
@@ -73,7 +68,10 @@ export class NoteIndex extends React.Component {
     return(
       <div style = {{marginTop : 10, overflow: 'auto'}}>
         <center>
-          <NoteList value = {this.state.notes} onUpdate = {this.updateNotes}/>
+          <NoteList
+            value = {this.state.notes}
+            onUpdate = {this.updateNotes}
+            history = {this.props.history}/>
         </center>
         <Fab style={fabStyle} onClick = {this.createNote}>
           <CreateOutlined/>
